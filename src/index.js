@@ -17,6 +17,6 @@ app.use('/api-denuncias',router);
 var port = process.env.PORT || config_variables.port_app
 
 
-app.listen(app.get('port'),()=>{
+app.listen(port,()=>{
     console.log('listening on port ',port);
 });
