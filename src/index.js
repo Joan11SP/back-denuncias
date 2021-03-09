@@ -14,9 +14,9 @@ app.use(express.urlencoded({extended:true}));
 
 app.use('/api-denuncias',router);
 
-app.set('port',process.env.PORT || config_variables.port_app);
+var port = process.env.PORT || config_variables.port_app
 
 
 app.listen(app.get('port'),()=>{
-    console.log('listening on port ',app.get('port'));
+    console.log('listening on port ',port);
 });
