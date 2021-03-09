@@ -41,7 +41,16 @@ const denuncias = async (req,res) => {
         res.json({mensaje:"Faltan datos", ok:0})
     }
 }
+const all_denuncias = async (req,res) => {
+    try {
+        const busqueda = await denunciadb.buscar_all_denuncias();
+        res.json(busqueda)
+    } catch (error) {
+        res.json({mensaje:'Ocurrio un error',ok:0})
+    }
+}
 module.exports = {
     nueva_denuncia,
-    denuncias
+    denuncias,
+    all_denuncias
 }

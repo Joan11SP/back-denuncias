@@ -24,7 +24,21 @@ const buscar_denuncias = async (buscard) => {
         return {mensaje:"Denucias no encontradas", ok:0}
     }
 }
+const buscar_all_denuncias = async () => {
+    try {
+        const buscar = await denunciasdb.find({});
+
+        if(buscar.length > 0){
+            return {mensaje:"Denucias encontradas", ok:1, respuesta:buscar}
+        }else{
+            return {mensaje:"Denucias no encontradas", ok:0,respuesta:null}
+        }
+    } catch (error) {
+        return {mensaje:"Denucias no encontradas", ok:0}
+    }
+}
 module.exports = {
     crear_denuncia,
-    buscar_denuncias
+    buscar_denuncias,
+    buscar_all_denuncias
 }
