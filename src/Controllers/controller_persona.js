@@ -42,7 +42,32 @@ const crear_persona = async (req, res) => {
         res.json({ mensaje: "Faltan datos", ok: 0 })
     }
 }
+
+const crear_loguear_facebook = async (req,res) => {
+    try {
+        
+        const facebook = req.body;
+
+        if(facebook.email && facebook.first_name && facebook.last_name){
+            const existe = await validar_correo(facebook);
+            if(existe.ok == 1){
+                res.json({ mensaje: 'Ingreso correctamete', identificador: existe.persona._id, ok: 1 })
+            }else{
+                const crear = await nueva_persona(facebook);
+                res.json({mensaje:crear.mensaje, ok:crear.ok, identificador: crear._id});
+            }
+        }else{
+            res.json({mensaje:"No se puede completar", ok: 0});
+        }
+
+    } catch (error) {
+        res.json({mensaje:"Ocurrio un error, vuelve a intentarlo", ok: 0});
+    }
+} 
+
+
 module.exports = {
     login_persona,
-    crear_persona
+    crear_persona,
+    crear_loguear_facebook
 }
