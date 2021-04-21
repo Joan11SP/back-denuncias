@@ -37,8 +37,19 @@ const buscar_all_denuncias = async () => {
         return {mensaje:"Denucias no encontradas", ok:0}
     }
 }
+const buscar_una_denuncia = async (buscar) => {
+    try {
+        
+        const find = await denunciasdb.findOne({_id:Types.ObjectId(buscar.id_denuncia)});
+        return { mensaje: 'Realiazo correctamente', ok: 1, respuesta:find};
+
+    } catch (error) {
+        throw error;
+    }
+}
 module.exports = {
     crear_denuncia,
     buscar_denuncias,
-    buscar_all_denuncias
+    buscar_all_denuncias,
+    buscar_una_denuncia
 }
