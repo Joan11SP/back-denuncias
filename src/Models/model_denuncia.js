@@ -12,7 +12,7 @@ const denunciaSchema = new Schema({
     longitud:{type:Number,trim:true},
     id_persona:{type:Types.ObjectId,trim:true},
     imagenes:{type:Array,trim:true},
-
+    status:{type:Number,trim:true,default:1} // 1 activo
     
 });
 
