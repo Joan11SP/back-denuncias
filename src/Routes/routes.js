@@ -1,5 +1,5 @@
 const {crear_persona,login_persona,crear_loguear_facebook} = require('../Controllers/controller_persona');
-const {nueva_denuncia,denuncias,all_denuncias,una_denuncia} = require('../Controllers/controller_denuncias');
+const control_denuncia = require('../Controllers/controller_denuncias');
 const {Router} = require('express');
 const upload = require('../Utilities/utilities_multer');
 const router = Router();
@@ -7,12 +7,18 @@ const router = Router();
 // RUTAS DE PERSONA
 router.post('/crear-persona', crear_persona);
 router.post('/login-persona', login_persona);
-
-//RUTAS DE DENUNCIAS
-router.post('/crear-denuncia', upload, nueva_denuncia);
-router.post('/filtrar-denuncias',denuncias);
-router.post('/filtrar-all-denuncias',all_denuncias);
 router.post('/crear-login-facebook',crear_loguear_facebook);
-router.post('/buscar-una-denuncia',una_denuncia);
 
+// RUTAS DE DENUNCIAS
+router.post('/crear-denuncia', upload, control_denuncia.nueva_denuncia);
+router.post('/filtrar-denuncias',control_denuncia.denuncias);
+router.post('/filtrar-all-denuncias',control_denuncia.all_denuncias);
+router.post('/buscar-una-denuncia',control_denuncia.una_denuncia);
+
+
+// RUTAS ENTIDAD
+router.post('/obtener-all-entidades',control_denuncia.get_entidades);
+
+// RUTAS REPORTAR
+router.post('/admin-reportar-denuncia',control_denuncia.nuevo_reporte);
 module.exports = router 

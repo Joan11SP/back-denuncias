@@ -1,5 +1,6 @@
 const denunciadb = require('../Consultas/consulta_denuncias');
 const cloudinary = require('cloudinary');
+const config = require('../Utilities/config');
 
 cloudinary.config({
     cloud_name:'dm8jnpxaf',
@@ -8,11 +9,9 @@ cloudinary.config({
 })
 
 const nueva_denuncia = async (req,res) => {
-    console.log(req.files);
     const imagenes = req.files
     const denuncia = req.body;
     const img_clou = []
-    console.log(req.body);
     try {
         if(denuncia.id_persona && denuncia.fecha && denuncia.hora && denuncia.latitud && denuncia.longitud){
             if(imagenes.length > 0){
@@ -63,9 +62,36 @@ const una_denuncia = async (req,res) => {
         res.json({mensaje:'Ocurrio un error',ok:0})
     }
 }
+
+const nuevo_reporte = async (req,res,next) => {
+    try {
+        var crear = req.body;
+        if(!crear.id_admin || !crear.id_denuncia || !crear.id_entidad){
+            req.body = {mensaje: config.FALTA_INFORMACION, ok: config.ERROR}
+        }
+        else
+            req.body = await denunciadb.crear_reporte(crear);
+        next();
+    } catch (error) {
+        req.body =  {mensaje: config.ERROR_CATCH, ok: config.ERROR}
+        next();
+    }
+}
+
+const get_entidades = async (req,res,next) => {
+    try {
+        req.body = await denunciadb.obtener_entidades();
+        next();
+    } catch (error) {
+        req.body =  {mensaje: config.ERROR_CATCH, ok: config.ERROR}
+        next();
+    }
+}
 module.exports = {
     nueva_denuncia,
     denuncias,
     all_denuncias,
-    una_denuncia
+    una_denuncia,
+    nuevo_reporte,
+    get_entidades
 }

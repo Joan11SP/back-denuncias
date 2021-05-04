@@ -1,5 +1,8 @@
 const { Types } = require('mongoose');
 const denunciasdb = require('../Models/model_denuncia');
+const reportardb = require('../Models/model_reportar');
+const entidadb = require('../Models/model_entidades');
+const config = require('../Utilities/config');
 
 const crear_denuncia = async (denuncia) => {
     const nueva = new denunciasdb(denuncia);
@@ -47,9 +50,38 @@ const buscar_una_denuncia = async (buscar) => {
         throw error;
     }
 }
+
+//reporta una denuncia a una entidad
+const crear_reporte = async (buscar) => {
+    try {
+        const find = await reportardb.findOne({id_denuncia:Types.ObjectId(buscar.id_denuncia)});
+
+        if(find != null) return {mensaje: config.DENUNCIA_EXISTE, ok: config.ERROR}
+
+        const nuevo = await new reportardb(buscar);
+        nuevo = await nuevo.save();
+
+        if(nuevo == null) return {mensaje: config.ERROR_GUARDAR, ok: config.ERROR}
+
+        return {mensaje: config.TODO_CORRECTO, ok: config.SUCCESS}
+    } catch (error) {
+        throw error;
+    }
+}
+
+const obtener_entidades = async () => {
+    try {
+        const find = await entidadb.find();
+        return {mensaje: config.TODO_CORRECTO, ok: config.SUCCESS,respuesta:find}
+    } catch (error) {
+        throw error;
+    }
+}
 module.exports = {
     crear_denuncia,
     buscar_denuncias,
     buscar_all_denuncias,
-    buscar_una_denuncia
+    buscar_una_denuncia,
+    crear_reporte ,
+    obtener_entidades
 }
